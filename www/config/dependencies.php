@@ -21,3 +21,33 @@ $container->set(HomeController::class, function (ContainerInterface $c) {
 $container->set('flash',  function () {
     return new Messages();
 });
+
+$container->set(
+    FlashController::class,
+    function (Container $c) {
+        $controller = new FlashController($c->get("view"), $c->get("flash"));
+        return $controller;
+    }
+);
+
+$container->set('db', function () {
+    return PDOSingleton::getInstance(
+        $_ENV['MYSQL_USER'],
+        $_ENV['MYSQL_PASSWORD'],
+        $_ENV['MYSQL_HOST'],
+        $_ENV['MYSQL_PORT'],
+        $_ENV['MYSQL_DATABASE']
+    );
+});
+
+$container->set(UserRepository::class, function (ContainerInterface $container) {
+    return new MySQLUserRepository($container->get('db'));
+});
+
+$container->set(
+    CreateUserController::class,
+    function (Container $c) {
+        $controller = new CreateUserController($c->get("view"), $c->get(UserRepository::class));
+        return $controller;
+    }
+);

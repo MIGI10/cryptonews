@@ -15,8 +15,20 @@ $app->get('/', function (Request $request, Response $response): Response {
 // $app->get('/', HomeController::class . ':apply')->setName('home')
 //    ->add(AfterMiddleware::class);
 
+$container->set(
+    HomeController::class,
+    function (ContainerInterface $c) {
+        $controller = new HomeController($c->get("view"), $c->get("flash"));
+        return $controller;
+    }
+);
+
 // global: $app->add(AfterMiddleware::class);
 
 $app->get('/visits', VisitsController::class . ':showVisits')->setName('visits');
 
 // $app->get('/cookies', VisitsController::class . ':showVisits')->setName('visits');
+
+//$app->get('/flash', FlashController::class::class . ':showVisits')->setName('visits');
+
+$app->post('/user', CreateUserController::class . ":apply")->setName('create_user');
