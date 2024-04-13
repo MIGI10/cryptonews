@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Model\Repository;
+namespace Salle\Ca2CryptoNews\Model\Repository;
 
 use PDO;
 use Student\SlimSkeleton\Model\User;
@@ -12,9 +12,9 @@ final class MysqlUserRepository implements UserRepository
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s';
 
-    private PDOSingleton $database;
+    private PDO $database;
 
-    public function __construct(PDOSingleton $database)
+    public function __construct(PDO $database)
     {
         $this->database = $database;
     }
@@ -25,7 +25,7 @@ final class MysqlUserRepository implements UserRepository
         INSERT INTO user(email, password, created_at, updated_at)
         VALUES(:email, :password, :created_at, :updated_at)
 QUERY;
-        $statement = $this->database->connection()->prepare($query);
+        $statement = $this->database->prepare($query);
 
         $email = $user->email();
         $password = $user->password();

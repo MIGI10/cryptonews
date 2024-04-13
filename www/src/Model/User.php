@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Model;
+namespace Salle\Ca2CryptoNews\Model;
 
 use DateTime;
 

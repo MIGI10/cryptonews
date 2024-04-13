@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Controller;
+namespace Salle\Ca2CryptoNews\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -13,10 +13,16 @@ use Slim\Views\Twig;
 final class FlashController
 {
 
+    private Twig $twig;
+    private Messages $flash;
+
     public function __construct(
-        private Twig $twig,
-        private Messages $flash
-    ) {}
+        Twig $twig,
+        Messages $flash
+    ) {
+        $this->flash = $flash;
+        $this->twig = $twig;
+    }
 
     public function addMessage(Request $request, Response $response): Response
     {

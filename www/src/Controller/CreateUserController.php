@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Controller;
+namespace Salle\Ca2CryptoNews\Controller;
 
 use DateTime;
 use Exception;
-use Student\SlimSkeleton\Model\User;
-use Student\SlimSkeleton\Model\UserRepository;
+use Salle\Ca2CryptoNews\Model\User;
+use Salle\Ca2CryptoNews\Model\UserRepository;
 use Slim\Views\Twig;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;

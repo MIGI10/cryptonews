@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Controller;
+namespace Salle\Ca2CryptoNews\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Flash\Messages;
 use Slim\Views\Twig;
 
 final class HomeController
@@ -14,7 +15,6 @@ final class HomeController
 
     private Messages $flash;
 
-    // You can also use https://stitcher.io/blog/constructor-promotion-in-php-8
     public function __construct(Twig $twig)
     {
         $this->twig = $twig;
@@ -30,6 +30,5 @@ final class HomeController
         return $this->twig->render($response, 'home.twig', [
             'notifications' => $notifications
         ]);
-        //return $this->twig->render($response, 'home.twig');
     }
 }

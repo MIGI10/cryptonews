@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Model\Repository; //Take care if you added the Repository folder inside Model folder or outside that
+namespace Salle\Ca2CryptoNews\Model\Repository;
 
 use PDO;
 
@@ -21,13 +21,13 @@ final class PDOSingleton
         string $port,
         string $database
     ) {
-        $db = new PDO(
+        $db = new PDOSingleton(
             sprintf(self::CONNECTION_STRING, $host, $port, $database),
             $username,
             $password
         );
 
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->setAttribute(PDOSingleton::ATTR_ERRMODE, PDOSingleton::ERRMODE_EXCEPTION);
 
         $this->connection = $db;
     }
@@ -52,7 +52,7 @@ final class PDOSingleton
         return self::$instance;
     }
 
-    public function connection(): PDO
+    public function connection(): PDOSingleton
     {
         return $this->connection;
     }

@@ -1,25 +1,24 @@
 {
-  "name": "student/lscryptonews",
-  "description": "Continuous Assessment 2",
-  "type": "project",
-  "autoload": {
-    "psr-4": {
-      "Salle\\LSCryptoNews\\": "src/"
+    "name": "salle/ca2-cryptonews",
+    "description": "Web Projects II CA2",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Salle\\Ca2CryptoNews\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "miguelnicolas.palau"
+        }
+    ],
+    "require": {
+        "slim/slim": "^4.13",
+        "slim/psr7": "^1.6",
+        "slim/twig-view": "^3.3",
+        "php-di/slim-bridge": "^3.4",
+        "slim/flash": "^0.4.0",
+        "ext-pdo": "*",
+        "dflydev/fig-cookies": "^3.1"
     }
-  },
-  "authors": [
-    {
-      "name": "Student name",
-      "email": "student.email@students.salle.url.edu"
-    }
-  ],
-  "require": {
-    "ext-pdo": "*",
-    "slim/slim": "4.10.0",
-    "slim/psr7": "1.5",
-    "php-di/slim-bridge": "^3.1",
-    "slim/twig-view": "3.3",
-    "ext-json": "*"
-  }
-
 }

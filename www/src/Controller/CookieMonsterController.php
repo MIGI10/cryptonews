@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Controller;
+namespace Salle\Ca2CryptoNews\Controller;
 
 use Dflydev\FigCookies\FigRequestCookies;
 use Dflydev\FigCookies\FigResponseCookies;

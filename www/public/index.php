@@ -3,12 +3,9 @@
 declare(strict_types=1);
 
 use Slim\Factory\AppFactory;
+use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
-
-$dotenv = new Dotenv();
-
-$dotenv->load(__DIR__ . '/../.env');
 
 require_once __DIR__ . '/../config/dependencies.php';
 

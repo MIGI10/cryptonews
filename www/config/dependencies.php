@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 use DI\Container;
+use Psr\Container\ContainerInterface;
+use Salle\Ca2CryptoNews\Model\Repository\MysqlUserRepository;
+use Salle\Ca2CryptoNews\Model\Repository\PDOSingleton;
+use Salle\Ca2CryptoNews\Model\UserRepository;
+use Slim\Flash\Messages;
 use Slim\Views\Twig;
 
 $container = new Container();
@@ -11,43 +16,24 @@ $container->set('view', function () {
     return Twig::create(__DIR__ . '/../templates', ['cache' => false]);
 });
 
-// add use
-$container->set(HomeController::class, function (ContainerInterface $c) {
-    return new HomeController($c->get('view'));
+$container->set(Twig::class, function (ContainerInterface $c) {
+    return $c->get('view');
 });
 
-// add controllers
-
-$container->set('flash',  function () {
+$container->set(Messages::class,  function () {
     return new Messages();
 });
 
-$container->set(
-    FlashController::class,
-    function (Container $c) {
-        $controller = new FlashController($c->get("view"), $c->get("flash"));
-        return $controller;
-    }
-);
-
-$container->set('db', function () {
+$container->set(PDO::class, function () {
     return PDOSingleton::getInstance(
         $_ENV['MYSQL_USER'],
         $_ENV['MYSQL_PASSWORD'],
         $_ENV['MYSQL_HOST'],
         $_ENV['MYSQL_PORT'],
         $_ENV['MYSQL_DATABASE']
-    );
+    )->connection();
 });
 
-$container->set(UserRepository::class, function (ContainerInterface $container) {
-    return new MySQLUserRepository($container->get('db'));
+$container->set(UserRepository::class, function (ContainerInterface $c) {
+    return $c->get(MysqlUserRepository::class);
 });
-
-$container->set(
-    CreateUserController::class,
-    function (Container $c) {
-        $controller = new CreateUserController($c->get("view"), $c->get(UserRepository::class));
-        return $controller;
-    }
-);
