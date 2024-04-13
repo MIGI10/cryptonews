@@ -13,22 +13,20 @@ final class HomeController
 {
     private Twig $twig;
 
-    private Messages $flash;
-
     public function __construct(Twig $twig)
     {
         $this->twig = $twig;
-        $this->flash = $flash;
     }
 
     public function apply(Request $request, Response $response): Response
     {
-        $messages = $this->flash->getMessages();
 
-        $notifications = $messages['notifications'] ?? [];
+        if (session_status() === PHP_SESSION_ACTIVE) {
+
+        }
 
         return $this->twig->render($response, 'home.twig', [
-            'notifications' => $notifications
+            'user' => $user
         ]);
     }
 }

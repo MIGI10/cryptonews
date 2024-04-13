@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Student\SlimSkeleton\Controller;
+namespace Salle\Ca2CryptoNews\Controller;
 
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
@@ -11,9 +11,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 final class SimpleFormController
 {
-    public function __construct(
-        private Twig $twig
-    ) {}
+    private Twig $twig;
+
+    public function __construct(Twig $twig) {
+        $this->twig = $twig;
+    }
 
     public function showForm(Request $request, Response $response): Response
     {
