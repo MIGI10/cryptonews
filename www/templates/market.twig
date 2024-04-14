@@ -1,0 +1,31 @@
+{% extends "base.twig" %}
+
+{% block title %}Market{% endblock %}
+
+{% block content %}
+    {%- if balance -%}
+        <h1 data-cy="market-updates__title">Market Updates</h1>
+    {%- else -%}
+        <h1 data-cy="market-updates__title">Welcome to CryptoNews! Login if you want to see your updated data.</h1>
+    {%- endif -%}
+    <p>Your Bitcoin balance:</p>
+    <p data-cy="market-updates__user-cryptobalance">
+        {%- if balance -%}
+            {{- balance -}}
+        {%- endif -%}
+    </p>
+    {%- if currencies is not empty -%}
+        <ul data-cy="market-updates__list">
+            {%- for currency in currencies -%}
+                <li data-cy="market-updates__item">
+                    <h2 data-cy="market-updates__item-title">
+                        {{- currency.name -}}
+                    </h2>
+                    <p data-cy="market-updates__item-price">
+                        {{- currency.price -}}
+                    </p>
+                </li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{% endblock %}
