@@ -8,13 +8,14 @@ use PDO;
 
 final class PDOSingleton
 {
-    private const CONNECTION_STRING = 'mysql:host=%s;port=%s;dbname=%s';
+    private const CONNECTION_STRING = '%s:host=%s;port=%s;dbname=%s';
 
     private static ?PDOSingleton $instance = null;
 
     private PDO $connection;
 
     private function __construct(
+        string $service,
         string $username,
         string $password,
         string $host,
@@ -22,7 +23,7 @@ final class PDOSingleton
         string $database
     ) {
         $db = new PDO(
-            sprintf(self::CONNECTION_STRING, $host, $port, $database),
+            sprintf(self::CONNECTION_STRING, $service, $host, $port, $database),
             $username,
             $password
         );
@@ -33,6 +34,7 @@ final class PDOSingleton
     }
 
     public static function getInstance(
+        string $service,
         string $username,
         string $password,
         string $host,
@@ -41,6 +43,7 @@ final class PDOSingleton
     ): PDOSingleton {
         if (self::$instance === null) {
             self::$instance = new self(
+                $service,
                 $username,
                 $password,
                 $host,

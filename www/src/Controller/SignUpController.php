@@ -15,7 +15,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-final class SignUpController extends UserController implements FormController
+final class SignUpController extends UserController
 {
 
     public function __construct(Twig $twig, UserRepository $userRepository)
@@ -36,28 +36,30 @@ final class SignUpController extends UserController implements FormController
     {
         $data = $request->getParsedBody();
 
-        $errors = $this->checkInput($data['email'], $data['password']);
+        $errors = $this->checkInput($data['email'], $data['pass']);
 
         if ($this->userRepository->fetch($data['email'], null) != null) {
             $errors['email'][] = 'The email address is already registered.';
         }
 
         if ($data['pass'] !== $data['pass_confirm']) {
+            $errors['pass'] = [];
             $errors['pass'][] = 'Passwords do not match.';
         }
 
         $errors['bitcoins'] = [];
 
-        if (empty($data['bitcoins']) || !preg_match('/^\d+$/', $data['bitcoins'])) {
+        if (!empty($data['bitcoins']) && !preg_match('/^([+-]?[1-9]\d*|0)$/', $data['bitcoins'])) {
             $errors['bitcoins'][] = 'The number of Bitcoins is not a valid number.';
         }
-
-        if ($data['bitcoins'] < 0 || $data['bitcoins'] > 40000) {
-            $errors['bitcoins'][] = 'Sorry, the number of Bitcoins is either below or above the limits.';
+        else {
+            if (!empty($data['bitcoins']) && ($data['bitcoins'] < 0 || $data['bitcoins'] > 40000)) {
+                $errors['bitcoins'][] = 'Sorry, the number of Bitcoins is either below or above the limits.';
+            }
         }
 
-        if (empty($errors)) {
-            $user = new User($data['email'], $data['pass'], $data['bitcoins'], new DateTime(), new DateTime());
+        if (empty($errors['email']) && empty($errors['pass']) && empty($errors['bitcoins'])) {
+            $user = new User($data['email'], $data['pass'], intval($data['bitcoins']), new DateTime(), new DateTime());
             $this->userRepository->save($user);
 
             $routeParser = RouteContext::fromRequest($request)->getRouteParser();

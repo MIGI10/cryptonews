@@ -26,12 +26,13 @@ $container->set(Messages::class,  function () {
 
 $container->set(PDO::class, function () {
     return PDOSingleton::getInstance(
-        $_ENV['MYSQL_USER'],
-        $_ENV['MYSQL_PASSWORD'],
-        $_ENV['MYSQL_HOST'],
+        $_ENV['DB_CONNECTION'],
+        $_ENV['DB_USERNAME'],
+        $_ENV['DB_PASSWORD'],
+        $_ENV['DB_HOST'],
         $_ENV['MYSQL_PORT'],
-        $_ENV['MYSQL_DATABASE']
-    )->connection();
+        $_ENV['DB_DATABASE']
+    )->getConnection();
 });
 
 $container->set(UserRepository::class, function (ContainerInterface $c) {

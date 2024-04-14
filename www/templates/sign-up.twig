@@ -7,13 +7,13 @@
         Email address
         <input type="text"
                name="email"
-               value="{% if data.email %}{{ data.email }}{% endif %}" data-cy="sign-up__email">
+               value="{%- if data.email -%}{{- data.email -}}{%- endif -%}" data-cy="sign-up__email">
         <span data-cy="sign-up__wrongEmail">
-            {% if errors.email %}
-                {% for error in errors.email %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
+            {%- if errors.email -%}
+                {%- for error in errors.email -%}
+                    <p style="color: red;">{{- error -}}</p>
+                {%- endfor -%}
+            {%- endif -%}
         </span>
         <br>
         Password
@@ -22,23 +22,23 @@
         Repeat password
         <input type="password" name="pass_confirm" data-cy="sign-up__repeatPassword">
         <span data-cy="sign-up__wrongPassword">
-            {% if errors.pass %}
-                {% for error in errors.pass %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
+            {%- if errors.pass -%}
+                {%- for error in errors.pass -%}
+                    <p style="color: red;">{{- error -}}</p>
+                {%- endfor -%}
+            {%- endif -%}
         </span>
         <br>
         Number of bitcoins
         <input type="text"
                name="bitcoins"
-               value="{% if data.bitcoins %}{{ data.bitcoins }}{% endif %}" data-cy="sign-up__coins">
+               value="{% if data.bitcoins %}{{- data.bitcoins -}}{% endif %}" data-cy="sign-up__coins">
         <span data-cy="sign-up__wrongCoins">
-            {% if errors.bitcoins %}
-                {% for error in errors.bitcoins %}
-                    <p style="color: red;">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
+            {%- if errors.bitcoins -%}
+                {%- for error in errors.bitcoins -%}
+                    <p style="color: red;">{{- error -}}</p>
+                {%- endfor -%}
+            {% endif -%}
         </span>
         <br>
         <input type="submit" value="Sign Up" data-cy="sign-up__btn">
