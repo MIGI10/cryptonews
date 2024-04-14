@@ -8,7 +8,6 @@ use DateTime;
 
 final class User
 {
-    private int $id;
     private string $email;
     private string $password;
     private int $numBitcoins;
@@ -27,17 +26,6 @@ final class User
         $this->numBitcoins = $numBitcoins;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function getEmail(): string

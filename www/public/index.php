@@ -7,6 +7,8 @@ use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+date_default_timezone_set('Europe/Madrid');
+
 require_once __DIR__ . '/../config/dependencies.php';
 
 AppFactory::setContainer($container);

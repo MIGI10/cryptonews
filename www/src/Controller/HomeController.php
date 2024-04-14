@@ -7,6 +7,9 @@ namespace Salle\Ca2CryptoNews\Controller;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 final class HomeController
 {
@@ -22,8 +25,12 @@ final class HomeController
 
         $user = isset($_SESSION['user']) ? explode('@', $_SESSION['user']->getEmail())[0] : 'stranger';
 
-        return $this->twig->render($response, 'home.twig', [
-            'user' => $user
-        ]);
+        try {
+            return $this->twig->render($response, 'home.twig', [
+                'user' => $user
+            ]);
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return $response->withStatus(500);
+        }
     }
 }
