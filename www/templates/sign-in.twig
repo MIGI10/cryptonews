@@ -3,7 +3,11 @@
 {% block title %}Sign In{% endblock %}
 
 {% block content %}
-    <span data-cy="sign-in__message"></span>
+    <span data-cy="sign-in__message">
+        {% if errors.unauthorized %}
+            <p style="color: red;">You must be logged in to access the news page.</p>
+        {% endif %}
+    </span>
     <form action="/sign-in" method="POST" accept-charset="utf-8" data-cy="sign-in">
         Email address
         <input type="text"

@@ -3,23 +3,13 @@
 declare(strict_types=1);
 
 use Salle\Ca2CryptoNews\Controller\HomeController;
-use Salle\Ca2CryptoNews\Controller\old\CookieMonsterController;
-use Salle\Ca2CryptoNews\Controller\old\CreateUserController;
-use Salle\Ca2CryptoNews\Controller\old\FlashController;
-use Salle\Ca2CryptoNews\Controller\old\VisitsController;
+use Salle\Ca2CryptoNews\Controller\MarketController;
+use Salle\Ca2CryptoNews\Controller\NewsController;
 use Salle\Ca2CryptoNews\Controller\SignInController;
 use Salle\Ca2CryptoNews\Controller\SignUpController;
 use Salle\Ca2CryptoNews\Middleware\SessionMiddleware;
 
 $app->add(SessionMiddleware::class);
-
-$app->get('/visits', VisitsController::class . ':showVisits')->setName('visits');
-
-$app->get('/cookies', CookieMonsterController::class . ':showAdvice')->setName('cookies');
-
-$app->get('/flash', FlashController::class . ':addMessage')->setName('flash');
-
-$app->post('/user', CreateUserController::class . ":apply")->setName('create_user');
 
 $app->get('/sign-up', SignUpController::class . ':showForm')->setName('sign-up');
 
@@ -30,3 +20,7 @@ $app->get('/sign-in', SignInController::class . ':showForm')->setName('sign-in')
 $app->post('/sign-in', SignInController::class . ':handleForm')->setName('sign-in-handle');
 
 $app->get('/', HomeController::class . ':apply')->setName('home');
+
+$app->get('/news', NewsController::class . ':apply')->setName('news');
+
+$app->get('/mkt', MarketController::class . ':apply')->setName('market');

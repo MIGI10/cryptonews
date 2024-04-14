@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Salle\Ca2CryptoNews\Controller;
 
-use DateTime;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Salle\Ca2CryptoNews\Model\User;
 use Salle\Ca2CryptoNews\Model\UserRepository;
 use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
@@ -48,7 +46,7 @@ final class SignInController extends UserController implements FormController
 
         if (empty($errors)) {
 
-            // TODO: store cookie?
+            $_SESSION['user'] = $user;
 
             $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 

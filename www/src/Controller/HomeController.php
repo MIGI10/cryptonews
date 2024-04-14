@@ -6,7 +6,6 @@ namespace Salle\Ca2CryptoNews\Controller;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Slim\Flash\Messages;
 use Slim\Views\Twig;
 
 final class HomeController
@@ -21,9 +20,7 @@ final class HomeController
     public function apply(Request $request, Response $response): Response
     {
 
-        if (session_status() === PHP_SESSION_ACTIVE) {
-
-        }
+        $user = isset($_SESSION['user']) ? explode('@', $_SESSION['user']->getEmail())[0] : 'stranger';
 
         return $this->twig->render($response, 'home.twig', [
             'user' => $user
