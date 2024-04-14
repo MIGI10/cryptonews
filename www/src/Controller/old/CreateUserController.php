@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Salle\Ca2CryptoNews\Controller;
+namespace Salle\Ca2CryptoNews\Controller\old;
 
 use DateTime;
 use Exception;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Salle\Ca2CryptoNews\Model\User;
 use Salle\Ca2CryptoNews\Model\UserRepository;
 use Slim\Views\Twig;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 
 final class CreateUserController
 {
