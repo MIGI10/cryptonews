@@ -4,57 +4,49 @@ declare(strict_types=1);
 
 namespace Salle\Ca2CryptoNews\Controller;
 
+use DateTime;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Salle\Ca2CryptoNews\Model\User;
+use Salle\Ca2CryptoNews\Model\UserRepository;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-final class SignUpController
+final class SignUpController extends UserController implements FormController
 {
-    private Twig $twig;
 
-    public function __construct(Twig $twig)
+    public function __construct(Twig $twig, UserRepository $userRepository)
     {
-        $this->twig = $twig;
+        parent::__construct($twig, $userRepository);
     }
 
     public function showForm(Request $request, Response $response): Response
     {
-        return $this->twig->render($response, 'sign-up.twig');
+        try {
+            return $this->twig->render($response, 'sign-up.twig');
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return $response->withStatus(500);
+        }
     }
 
     public function handleForm(Request $request, Response $response): Response
     {
         $data = $request->getParsedBody();
 
-        $errors = [];
-        $errors['email'] = [];
-        $errors['pass'] = [];
-        $errors['bitcoins'] = [];
+        $errors = $this->checkInput($data['email'], $data['password']);
 
-        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['email'][] = 'The email address is not valid.';
-        }
-
-        if ($this->isDomainUnknown($data['email'])) {
-            $errors['email'][] = 'Only emails from the domain @salle.url.edu are accepted.';
-        }
-
-        // TODO: check unique email
-        if (true) {
+        if ($this->userRepository->fetch($data['email'], null) != null) {
             $errors['email'][] = 'The email address is already registered.';
-        }
-
-        if (empty($data['pass']) || strlen($data['pass']) < 7) {
-            $errors['pass'][] = 'The password must contain at least 7 characters.';
-        }
-
-        if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+/', $data['pass'])) {
-            $errors['pass'][] = 'The password must contain both upper and lower case letters and numbers.';
         }
 
         if ($data['pass'] !== $data['pass_confirm']) {
             $errors['pass'][] = 'Passwords do not match.';
         }
+
+        $errors['bitcoins'] = [];
 
         if (empty($data['bitcoins']) || !preg_match('/^\d+$/', $data['bitcoins'])) {
             $errors['bitcoins'][] = 'The number of Bitcoins is not a valid number.';
@@ -64,17 +56,24 @@ final class SignUpController
             $errors['bitcoins'][] = 'Sorry, the number of Bitcoins is either below or above the limits.';
         }
 
-        // TODO: store user & redirect?
+        if (empty($errors)) {
+            $user = new User($data['email'], $data['pass'], $data['bitcoins'], new DateTime(), new DateTime());
+            $this->userRepository->save($user);
 
-        return $this->twig->render($response, 'sign-up.twig', [
-            'errors' => $errors,
-            'data' => $data
-        ]);
-    }
+            $routeParser = RouteContext::fromRequest($request)->getRouteParser();
 
-    private function isDomainUnknown(string $email): bool
-    {
-        $email_split = explode('@', $email);
-        return count($email_split) == 2 && $email_split[1] === "salle.url.edu";
+            return $response
+                ->withHeader('Location', $routeParser->urlFor('sign-in'))
+                ->withStatus(303);
+        }
+
+        try {
+            return $this->twig->render($response, 'sign-up.twig', [
+                'errors' => $errors,
+                'data' => $data
+            ]);
+        } catch (LoaderError|RuntimeError|SyntaxError $e) {
+            return $response->withStatus(500);
+        }
     }
 }

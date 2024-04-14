@@ -21,13 +21,13 @@ final class PDOSingleton
         string $port,
         string $database
     ) {
-        $db = new PDOSingleton(
+        $db = new PDO(
             sprintf(self::CONNECTION_STRING, $host, $port, $database),
             $username,
             $password
         );
 
-        $db->setAttribute(PDOSingleton::ATTR_ERRMODE, PDOSingleton::ERRMODE_EXCEPTION);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $this->connection = $db;
     }
@@ -52,7 +52,7 @@ final class PDOSingleton
         return self::$instance;
     }
 
-    public function connection(): PDOSingleton
+    public function getConnection(): PDO
     {
         return $this->connection;
     }
